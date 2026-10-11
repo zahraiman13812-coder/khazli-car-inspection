@@ -101,10 +101,22 @@ export async function POST(
       imageUrl,
     });
   } catch (error) {
-    console.error(
-      "EQUIPMENT_UPLOAD_ERROR",
-      error,
-    );
+    
+
+console.error("EQUIPMENT_UPLOAD_ERROR", error);
+
+if (error instanceof Error) {
+  console.error("ERROR_NAME:", error.name);
+  console.error("ERROR_MESSAGE:", error.message);
+  console.error("ERROR_CAUSE:", error.cause);
+}
+
+
+if (error instanceof Error) {
+  console.error("ERROR_NAME:", error.name);
+  console.error("ERROR_CAUSE:", error.cause);
+}
+
 
     return jsonResponse(
       {

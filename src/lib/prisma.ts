@@ -1,42 +1,28 @@
-import {
-  PrismaBetterSqlite3,
-} from "@prisma/adapter-better-sqlite3";
+import "server-only";
 
-import {
-  PrismaClient,
-} from "@/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/generated/prisma/client";
 
-const databaseUrl =
-  process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-  throw new Error(
-    "DATABASE_URL is not defined.",
-  );
+  throw new Error("DATABASE_URL is not defined.");
 }
 
-const adapter =
-  new PrismaBetterSqlite3({
-    url: databaseUrl,
-  });
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient;
+};
 
-const globalForPrisma =
-  globalThis as unknown as {
-    prisma:
-      | PrismaClient
-      | undefined;
-  };
+const prismaAdapter = new PrismaPg({
+  connectionString: databaseUrl,
+});
 
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    adapter,
+    adapter: prismaAdapter,
   });
 
-if (
-  process.env.NODE_ENV !==
-  "production"
-) {
-  globalForPrisma.prisma =
-    prisma;
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
 }
