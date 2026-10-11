@@ -1,26 +1,551 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * ============================================================
+ * KHAZALI CAR INSPECTION — DESIGN SYSTEM
+ * سیستم طراحی سایت کارشناسی خودرو خزلی
+ * ============================================================
+ *
+ * IMPORTANT / مهم:
+ *
+ * All project colors MUST be defined in this file.
+ * تمام رنگ‌های پروژه فقط باید در همین فایل تعریف شوند.
+ *
+ * Never write hardcoded colors inside TSX components.
+ * هیچ رنگ مستقیمی داخل کامپوننت‌های TSX نوشته نشود.
+ *
+ * Correct / صحیح:
+ * bg-page
+ * text-ink
+ * bg-brand
+ * border-line
+ *
+ * Wrong / اشتباه:
+ * bg-white
+ * text-black
+ * bg-[#ffffff]
+ * text-[#111111]
+ * bg-yellow-500
+ */
+
+@theme {
+  /*
+   * ============================================================
+   * RESET DEFAULT TAILWIND COLORS
+   * حذف پالت رنگی پیش‌فرض Tailwind
+   * ============================================================
+   *
+   * This forces developers to use our semantic color system.
+   * این کار باعث می‌شود فقط رنگ‌های سیستم طراحی پروژه استفاده شوند.
+   */
+  --color-*: initial;
+
+  /*
+   * ============================================================
+   * BRAND
+   * رنگ‌های اصلی برند
+   * ============================================================
+   */
+
+  /*
+   * Primary gold inspired by the Khazali logo.
+   * طلایی اصلی گرفته‌شده از هویت بصری لوگوی خزلی.
+   *
+   * Usage:
+   * Primary CTA, icons, small accents and active states.
+   *
+   * کاربرد:
+   * دکمه اصلی، آیکن‌ها، تأکیدها و وضعیت‌های فعال.
+   */
+  --color-brand: #d6a62a;
+
+  /*
+   * Hover state for primary gold.
+   * رنگ Hover طلایی اصلی.
+   */
+  --color-brand-hover: #bd8e18;
+
+  /*
+   * Active/pressed state for primary gold.
+   * رنگ طلایی هنگام کلیک.
+   */
+  --color-brand-active: #9f7610;
+
+  /*
+   * Very soft gold background.
+   * پس‌زمینه طلایی بسیار کم‌رنگ.
+   *
+   * Usage:
+   * Badges, feature icons and highlighted cards.
+   *
+   * کاربرد:
+   * Badge، آیکن‌ها و کارت‌های ویژه.
+   */
+  --color-brand-soft: #fff8e6;
+
+  /*
+   * Gold border.
+   * حاشیه طلایی ملایم.
+   */
+  --color-brand-border: #ecd99c;
+
+  /*
+   * ============================================================
+   * PAGE & SURFACES
+   * رنگ‌های پس‌زمینه و سطوح
+   * ============================================================
+   */
+
+  /*
+   * Main website background.
+   * پس‌زمینه اصلی سایت.
+   */
+  --color-page: #ffffff;
+
+  /*
+   * Primary card background.
+   * پس‌زمینه اصلی کارت‌ها.
+   */
+  --color-surface: #ffffff;
+
+  /*
+   * Secondary light section background.
+   * پس‌زمینه سکشن‌های روشن ثانویه.
+   */
+  --color-surface-muted: #f7f7f5;
+
+  /*
+   * Hover background for light elements.
+   * پس‌زمینه Hover کارت‌ها و عناصر روشن.
+   */
+  --color-surface-hover: #f1f1ef;
+
+  /*
+   * Subtle warm surface.
+   * پس‌زمینه گرم و بسیار روشن هماهنگ با طلایی.
+   */
+  --color-surface-warm: #fdfbf5;
+
+  /*
+   * ============================================================
+   * TEXT / CONTENT
+   * رنگ‌های متن
+   * ============================================================
+   */
+
+  /*
+   * Primary black text.
+   * رنگ اصلی متن و تیترها.
+   */
+  --color-ink: #0d0d0d;
+
+  /*
+   * Secondary text.
+   * رنگ متن توضیحات و پاراگراف‌ها.
+   */
+  --color-ink-secondary: #4e4e4a;
+
+  /*
+   * Muted text.
+   * متن کم‌اهمیت‌تر، Caption و اطلاعات جانبی.
+   */
+  --color-ink-muted: #7d7d76;
+
+  /*
+   * Very soft text.
+   * متن بسیار کم‌رنگ.
+   */
+  --color-ink-soft: #a5a59e;
+
+  /*
+   * Text displayed over primary brand color.
+   * متن روی دکمه طلایی.
+   */
+  --color-on-brand: #0b0b0b;
+
+  /*
+   * ============================================================
+   * BORDERS
+   * رنگ‌های حاشیه و Divider
+   * ============================================================
+   */
+
+  /*
+   * Default border color.
+   * حاشیه پیش‌فرض کارت، Input و Divider.
+   */
+  --color-line: #e8e8e4;
+
+  /*
+   * Stronger border color.
+   * حاشیه پررنگ‌تر برای عناصر مهم.
+   */
+  --color-line-strong: #cecec7;
+
+  /*
+   * Very light divider.
+   * جداکننده بسیار ظریف.
+   */
+  --color-line-soft: #f1f1ee;
+
+  /*
+   * ============================================================
+   * FORM COLORS
+   * رنگ‌های فرم
+   * ============================================================
+   */
+
+  /*
+   * Input background.
+   * پس‌زمینه Input و Select.
+   */
+  --color-input: #ffffff;
+
+  /*
+   * Input hover background.
+   * پس‌زمینه Hover فیلدها.
+   */
+  --color-input-hover: #fafaf8;
+
+  /*
+   * Disabled input.
+   * پس‌زمینه فیلد غیرفعال.
+   */
+  --color-input-disabled: #f0f0ed;
+
+  /*
+   * Placeholder text.
+   * رنگ Placeholder فرم‌ها.
+   */
+  --color-placeholder: #9b9b94;
+
+  /*
+   * Input focus ring.
+   * رنگ Focus فیلدها.
+   */
+  --color-focus: #d6a62a;
+
+  /*
+   * ============================================================
+   * STATUS COLORS
+   * رنگ‌های وضعیت سیستم
+   * ============================================================
+   */
+
+  /*
+   * Success state.
+   * پرداخت موفق، ثبت موفق نوبت و عملیات موفق.
+   */
+  --color-success: #18794e;
+
+  /*
+   * Success background.
+   * پس‌زمینه پیام موفقیت.
+   */
+  --color-success-soft: #edf8f2;
+
+  /*
+   * Warning state.
+   * هشدار و وضعیت در انتظار.
+   */
+  --color-warning: #a76b09;
+
+  /*
+   * Warning background.
+   * پس‌زمینه هشدار.
+   */
+  --color-warning-soft: #fff8e8;
+
+  /*
+   * Danger state.
+   * خطا، حذف یا پرداخت ناموفق.
+   */
+  --color-danger: #c93232;
+
+  /*
+   * Danger background.
+   * پس‌زمینه پیام خطا.
+   */
+  --color-danger-soft: #fff0f0;
+
+  /*
+   * ============================================================
+   * OVERLAYS
+   * رنگ‌های Overlay
+   * ============================================================
+   */
+
+  /*
+   * Mobile navigation overlay.
+   * Overlay منوی موبایل.
+   */
+  --color-overlay: rgb(13 13 13 / 48%);
+
+  /*
+   * ============================================================
+   * SHADOWS
+   * سایه‌ها
+   * ============================================================
+   */
+
+  /*
+   * Standard card shadow.
+   * سایه کارت‌های عادی.
+   */
+  --shadow-card:
+    0 1px 2px rgb(13 13 13 / 3%),
+    0 12px 32px rgb(13 13 13 / 5%);
+
+  /*
+   * Floating element shadow.
+   * سایه عناصر شناور مانند Header و Booking Card.
+   */
+  --shadow-float:
+    0 10px 30px rgb(13 13 13 / 7%),
+    0 30px 80px rgb(13 13 13 / 7%);
+
+  /*
+   * ============================================================
+   * BORDER RADIUS
+   * گوشه‌های گرد
+   * ============================================================
+   */
+
+  --radius-card: 1.5rem;
+  --radius-panel: 2rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/*
+ * ============================================================
+ * GLOBAL BASE
+ * استایل‌های عمومی
+ * ============================================================
+ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+}
+
+/*
+ * Standard content container.
+ * کانتینر استاندارد تمام سکشن‌های سایت.
+ */
+.site-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .site-container {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-container {
+    padding-inline: 2.5rem;
+  }
+}
+
+/*
+ * Standard section spacing.
+ * فاصله عمودی استاندارد سکشن‌ها.
+ */
+.section-space {
+  padding-block: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-space {
+    padding-block: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-space {
+    padding-block: 8rem;
+  }
+}
+
+.article-editor .tiptap {
+  min-height: 420px;
+}
+
+.article-editor .tiptap > * + * {
+  margin-top: 1rem;
+}
+
+.article-editor .tiptap h2 {
+  margin-top: 2rem;
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1.8;
+  color: var(--color-ink);
+}
+
+.article-editor .tiptap h3 {
+  margin-top: 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.8;
+  color: var(--color-ink);
+}
+
+.article-editor .tiptap p {
+  line-height: 2.25;
+}
+
+.article-editor .tiptap ul {
+  list-style: disc;
+  padding-right: 1.5rem;
+}
+
+.article-editor .tiptap ol {
+  list-style: decimal;
+  padding-right: 1.5rem;
+}
+
+.article-editor .tiptap li {
+  margin-top: 0.4rem;
+  line-height: 2;
+}
+
+.article-editor .tiptap blockquote {
+  margin-block: 1.5rem;
+  border-right: 3px solid var(--color-brand);
+  padding: 0.75rem 1rem;
+  background: var(--color-surface-muted);
+  border-radius: 0.75rem;
+}
+
+.article-editor .tiptap a {
+  color: var(--color-brand-active);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.article-editor .tiptap hr {
+  margin-block: 2rem;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+
+/* Public article content */
+
+.article-content {
+  color: var(--color-ink-secondary);
+  font-size: 0.95rem;
+  line-height: 2.3;
+}
+
+.article-content > * + * {
+  margin-top: 1.25rem;
+}
+
+.article-content h2 {
+  margin-top: 2.75rem;
+  color: var(--color-ink);
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1.7;
+}
+
+.article-content h3 {
+  margin-top: 2rem;
+  color: var(--color-ink);
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1.8;
+}
+
+.article-content strong,
+.article-content b {
+  color: var(--color-ink);
+  font-weight: 900;
+}
+
+.article-content ul {
+  list-style: disc;
+  padding-right: 1.5rem;
+}
+
+.article-content ol {
+  list-style: decimal;
+  padding-right: 1.5rem;
+}
+
+.article-content li {
+  margin-top: 0.5rem;
+}
+
+.article-content blockquote {
+  margin-block: 2rem;
+  border-right: 4px solid var(--color-brand);
+  border-radius: 1rem;
+  background: var(--color-surface-muted);
+  padding: 1rem 1.25rem;
+  color: var(--color-ink-secondary);
+}
+
+.article-content a {
+  color: var(--color-brand-active);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.article-content hr {
+  margin-block: 2.5rem;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+@media (min-width: 640px) {
+  .article-content {
+    font-size: 1rem;
+  }
+
+  .article-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .article-content h3 {
+    font-size: 1.35rem;
+  }
 }
