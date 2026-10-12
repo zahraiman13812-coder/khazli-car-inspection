@@ -52,21 +52,12 @@ next-env.d.ts
 # Generated Prisma Client
 /src/generated/prisma
 
-# Environment variables
+# Environment
 .env
-.env.*
+.env.local
+.env.production
+.env.development
 !.env.example
 
-# Databases
-*.db
-*.db-journal
-*.sqlite
-*.sqlite3
-
-# Local backups
-prisma/migrations_sqlite_backup/
-
-# Temporary scripts
-test-db.cjs
-check-sqlite.cjs
-migrate-data.cjs
+# Local database backups
+/prisma/dev-backup.db

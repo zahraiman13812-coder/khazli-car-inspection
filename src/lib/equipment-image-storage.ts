@@ -1,55 +1,156 @@
-
-import { randomUUID } from "node:crypto";
-import sharp from "sharp";
+import {
+  randomUUID,
+} from "node:crypto";
 
 import {
-  uploadMedia,
-  deleteMedia,
-} from "@/lib/supabase-storage";
+  mkdir,
+  unlink,
+} from "node:fs/promises";
 
-const MAX_FILE_SIZE = 8 * 1024 * 1024;
+import path from "node:path";
 
-const ALLOWED_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-]);
+import sharp from "sharp";
 
-export async function saveEquipmentImage(file: File) {
-  if (!ALLOWED_TYPES.has(file.type)) {
-    throw new Error("فرمت تصویر معتبر نیست.");
+const MAX_FILE_SIZE =
+  8 * 1024 * 1024;
+
+const UPLOAD_DIRECTORY =
+  path.join(
+    process.cwd(),
+    "public",
+    "uploads",
+    "equipment",
+  );
+
+const PUBLIC_PREFIX =
+  "/uploads/equipment/";
+
+const ALLOWED_TYPES =
+  new Set([
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+  ]);
+
+export async function saveEquipmentImage(
+  file: File,
+) {
+  if (
+    !ALLOWED_TYPES.has(
+      file.type,
+    )
+  ) {
+    throw new Error(
+      "فرمت تصویر معتبر نیست.",
+    );
   }
 
-  if (file.size <= 0 || file.size > MAX_FILE_SIZE) {
-    throw new Error("حجم تصویر نامعتبر است.");
+  if (
+    file.size <= 0
+  ) {
+    throw new Error(
+      "فایل تصویر خالی است.",
+    );
   }
 
-  const input = Buffer.from(await file.arrayBuffer());
+  if (
+    file.size >
+    MAX_FILE_SIZE
+  ) {
+    throw new Error(
+      "حجم تصویر نباید بیشتر از ۸ مگابایت باشد.",
+    );
+  }
 
-  // Sharp also verifies the actual image format.
-  const output = await sharp(input)
+  const buffer =
+    Buffer.from(
+      await file.arrayBuffer(),
+    );
+
+  await mkdir(
+    UPLOAD_DIRECTORY,
+    {
+      recursive:
+        true,
+    },
+  );
+
+  const fileName =
+    `${Date.now()}-${randomUUID()}.webp`;
+
+  const absolutePath =
+    path.join(
+      UPLOAD_DIRECTORY,
+      fileName,
+    );
+
+  await sharp(
+    buffer,
+  )
     .rotate()
     .resize({
-      width: 1800,
-      height: 1350,
-      fit: "inside",
-      withoutEnlargement: true,
+      width:
+        1800,
+
+      height:
+        1350,
+
+      fit:
+        "inside",
+
+      withoutEnlargement:
+        true,
     })
-    .webp({ quality: 84 })
-    .toBuffer();
+    .webp({
+      quality:
+        84,
+    })
+    .toFile(
+      absolutePath,
+    );
 
-  const objectPath = `equipment/${Date.now()}-${randomUUID()}.webp`;
-
-  return uploadMedia(objectPath, output);
+  return `${PUBLIC_PREFIX}${fileName}`;
 }
 
 export async function deleteEquipmentImage(
-  imageUrl: string | null | undefined,
+  imageUrl:
+    string | null | undefined,
 ) {
-  if (!imageUrl) return;
+  if (
+    !imageUrl ||
+    !imageUrl.startsWith(
+      PUBLIC_PREFIX,
+    )
+  ) {
+    return;
+  }
 
-  // Legacy local images are not deleted from Supabase.
-  if (imageUrl.startsWith("/uploads/equipment/")) return;
+  const fileName =
+    path.basename(
+      imageUrl,
+    );
 
-  await deleteMedia(imageUrl);
+  const absolutePath =
+    path.join(
+      UPLOAD_DIRECTORY,
+      fileName,
+    );
+
+  try {
+    await unlink(
+      absolutePath,
+    );
+  } catch (
+    error
+  ) {
+    const nodeError =
+      error as NodeJS.ErrnoException;
+
+    if (
+      nodeError.code !==
+      "ENOENT"
+    ) {
+      throw error;
+    }
+  }
 }
